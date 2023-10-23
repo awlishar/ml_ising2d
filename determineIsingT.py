@@ -13,7 +13,7 @@ from keras.callbacks import ReduceLROnPlateau
 #  PREPARE TRAINING DATA
 #------------------------------------------------------------------------------
 print("Preparing training data.")
-folder = "../triton8_t2/"
+folder = "../data/"
 
 meta = np.load(folder + "meta.npy")
 data = np.load(folder + "data.npy")
@@ -36,9 +36,6 @@ energies /= (mcsteps*N*N)
 d_train = data
 t_train = temperatures
 c_train = categories
-
-# plt.scatter(temperatures, energies)
-# plt.show()
 
 f = plt.figure(figsize=(10, 5)) # plot the calculated values
 
@@ -183,39 +180,8 @@ def nature2(N):
 
   return model
 
-def conv1_1(N):
-  model = keras.Sequential()
 
-  model.add(Conv2D(filters = 64, kernel_size = (2,2),padding = 'Same',
-                  input_shape = (N,N,1)))
-  # model.add(Conv2D(filters = 10, kernel_size = (5,5),padding = 'Same',
-  #                 activation ='relu'))
-  model.add(MaxPool2D(pool_size=(2,2)))
-  model.add(Flatten())
-  model.add(Dense(64, activation = "relu"))
-  model.add(Dropout(0.8))
-  model.add(Dense(1))
-  optimizer = keras.optimizers.Adam()
 
-  model.compile(optimizer=optimizer,
-                loss=keras.losses.MeanSquaredError()
-                ,metrics=['accuracy']
-                )
-
-  return model
-
-# model = keras.Sequential([
-#     keras.layers.Flatten(input_shape=(N,N)),
-#     keras.layers.Dense(24, activation='sigmoid'),
-#     keras.layers.Dense(1)
-# ])
-#
-#
-# # Compile and train the model
-# model.compile(optimizer='adam',
-#               loss=keras.losses.MeanSquaredError(),
-#               metrics=['accuracy'])
-#
 case = "-conv2"
 model = conv2(N)
 
@@ -276,11 +242,10 @@ plt.savefig("T-training" + case + ".png")
 #     t_pred.append(t)
 #     d_pred.append(ising.lattice)
 
-
 # t_pred = t_test
 # c_pred = c_test
 # d_pred = d_test
-folder ="../triton8_100batches/"
+folder ="../data100/"
 d_pred = np.load(folder + "data.npy")
 t_pred = np.load(folder + "tlist.npy")
 

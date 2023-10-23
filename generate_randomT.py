@@ -7,17 +7,12 @@ import random
 
 ##############################################################################
 start_time = time.time()
-folder = "data10000_N16x16_rand/"
-folder = ""
-# os.mkdir(folder)
+folder = "data/"
+
 onsagerIsingTc = 1/(1/2*np.log(1+np.sqrt(2))) # Exact solution 2.269185314213022
-# temperatures = [0.001, onsagerIsingTc, 5.0]
-# temperatures = [0.001, 100]
 temperatures = []
-# nt = len(temperatures)
 nt = 100
-t_range = 4.0
-# temperatures = np.linspace(onsagerIsingTc-1.5, onsagerIsingTc+1.5, nt)
+t_range = 2.0
 
 energies = np.zeros(nt)
 magnetizations = np.zeros(nt)
@@ -38,12 +33,9 @@ for i in range(0,nt):
     t = random.uniform(onsagerIsingTc-t_range/2, onsagerIsingTc+t_range/2)
     temperatures.append(t)
     ising = IsingModel2D(N=N, T=t)
-    #print(ising)
     ising.runMonteCarlo2(mcsteps)
-    #print(ising)
     energies[i] = ising.energy
     magnetizations[i] = ising.magnetization
-    #print(ising.energy, ising.getEnergy())
     confs.append(ising)
     datalist.append(ising.lattice)
     elist.append(ising.energy)
@@ -51,8 +43,6 @@ for i in range(0,nt):
     clist.append(0 if ising.T < onsagerIsingTc else 1)
 print("--- %s seconds ---" % (time.time() - start_time))
 
-# plotConfigs(confs)
-# np.array(datalist).tofile('data.dat')
 
 np.save(folder + 'data', datalist)
 np.save(folder + 'elist', elist)
